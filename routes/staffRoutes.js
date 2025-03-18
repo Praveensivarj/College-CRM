@@ -1,0 +1,10 @@
+const express = require("express");
+const { getAllStaff, getStaffById, updateStaff, deleteStaff, changeStaffPassword } = require("../controllers/staffController");
+const authMiddleware = require("../middleware/authMiddleware");
+const router = express.Router();
+router.get("/", getAllStaff);
+router.get("/profile", authMiddleware, getStaffById);
+router.put("/update", authMiddleware, updateStaff);
+router.delete("/delete", authMiddleware, deleteStaff);
+router.post('/change-password', authMiddleware, changeStaffPassword);
+module.exports = router;

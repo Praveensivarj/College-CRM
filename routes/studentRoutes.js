@@ -1,0 +1,10 @@
+const express = require("express");
+const { getAllStudents, getStudentById, updateStudent, deleteStudent, changePassword } = require("../controllers/studentController");
+const authMiddleware = require("../middleware/authMiddleware");
+const router = express.Router();
+router.get("/", getAllStudents);
+router.get("/profile", authMiddleware, getStudentById);
+router.put("/update", authMiddleware, updateStudent);
+router.delete("/delete", authMiddleware, deleteStudent);
+router.post('/change-password', authMiddleware, changePassword);
+module.exports = router;
