@@ -187,13 +187,18 @@ exports.changePassword = (req, res) => {
         });
       }
 
-      if (new Date(student, this.updated_at).toISOString() !== new Date(req.student.updated_at).toISOString()) {
+      if (
+        !student.updated_at || 
+        !req.student.updated_at || 
+        new Date(student.updated_at).getTime() !== new Date(req.student.updated_at).getTime()
+      ) {
         return res.status(401).json({
           success: false,
           code: 401,
           message: "Invalid or expired token"
         });
       }
+      
 
       bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
         if (err) {

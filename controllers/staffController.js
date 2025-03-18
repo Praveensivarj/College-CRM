@@ -182,13 +182,20 @@ exports.changeStaffPassword = (req, res) => {
         });
       }
 
-      if (new Date(staff.updated_at).getTime() !== new Date(req.staff.updated_at).getTime()) {
+      if (
+        !staff?.updated_at || 
+        !req?.staff?.updated_at || 
+        isNaN(new Date(staff.updated_at).getTime()) || 
+        isNaN(new Date(req.staff.updated_at).getTime()) || 
+        new Date(staff.updated_at).getTime() !== new Date(req.staff.updated_at).getTime()
+      ) {
         return res.status(401).json({
           success: false,
           code: 401,
           message: "Invalid or expired token"
         });
-      }      
+      }
+            
 
       bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
         if (err) {
