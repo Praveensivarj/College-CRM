@@ -183,7 +183,7 @@ exports.changePassword = (req, res) => {
         return res.status(400).json({
           success: false,
           code: 400,
-          message: "New password and confirm password does not matched"
+          message: "New password and confirm password is not matching"
         });
       }
 
