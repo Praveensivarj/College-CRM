@@ -250,7 +250,7 @@ exports.resetPassword = (req, res) => {
                     return res.status(400).json({
                         success: false,
                         code: 400,
-                        message: "newPassword and ConfirmPassword does not matched"
+                        message: "newPassword and confirmPassword connot be same"
                     });
                 }
 
