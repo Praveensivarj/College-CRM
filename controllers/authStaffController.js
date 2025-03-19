@@ -228,11 +228,13 @@ exports.resetStaffPassword = (req, res) => {
             (err, results) => {
                 const data = results[0];
                 console.log(data);
-                if (err) return res.status(500).json({
-                    success: false,
-                    code: 500,
-                    message: "Intenal server error"
-                });
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        code: 500,
+                        message: "Internal server error"
+                    });
+                }
 
                 if (!newPassword || !confirmPassword) {
                     return res.status(401).json({
@@ -250,35 +252,41 @@ exports.resetStaffPassword = (req, res) => {
                     });
                 }
 
-                if (results.length === 0)
+                if (results.length === 0) {
                     return res.status(400).json({
                         success: false,
                         code: 400,
                         message: "Invalid or expired token"
                     });
+                }
 
                 bcrypt.hash(newPassword, 10, (err, hash) => {
-                    if (err) return res.status(500).json({
-                        success: false,
-                        code: 500,
-                        message: "Intenal server error"
-                    });
+                    if (err) {
+                        return res.status(500).json({
+                            success: false,
+                            code: 500,
+                            message: "Internal server error"
+                        });
+                    }
 
                     db.query(
                         "UPDATE staffs SET updated_at = now(), staff_password = ?, reset_token = NULL WHERE staff_email = ?",
                         [hash, decoded.staff_email],
                         (err) => {
-                            if (err) return res.status(500).json({
-                                success: false,
-                                code: 500,
-                                message: "Intenal server error"
-                            });
-
-                            res.json({
-                                success: true,
-                                code: 200,
-                                message: "Password reset successful"
-                            });
+                            if (err) {
+                                return res.status(500).json({
+                                    success: false,
+                                    code: 500,
+                                    message: "Internal server error"
+                                });
+                            }
+                            else {
+                                return res.status(200).json({
+                                    success: true,
+                                    code: 200,
+                                    message: "Password reset successful"
+                                });
+                            }
                         }
                     );
                 });
