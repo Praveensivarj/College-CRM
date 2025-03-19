@@ -150,11 +150,13 @@ exports.forgotStaffPassword = (req, res) => {
     const { staff_email } = req.body;
 
     db.query("SELECT * FROM staffs WHERE staff_email = ?", [staff_email], (err, results) => {
-        if (err) return res.status(500).json({
-            success: false,
-            code: 500,
-            message: "Database error"
-        });
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                code: 500,
+                message: "Database error"
+            });
+        }
         if (!staff_email) {
             return res.status(400).json({
                 success: false,
@@ -162,12 +164,13 @@ exports.forgotStaffPassword = (req, res) => {
                 message: "Email is required"
             });
         }
-        if (results.length === 0)
+        if (results.length === 0) {
             return res.status(404).json({
                 success: false,
                 code: 404,
                 message: "User not found"
             });
+        }
 
         const token = jwt.sign({ staff_email }, process.env.JWT_SECRET, {
             expiresIn: "10m",
