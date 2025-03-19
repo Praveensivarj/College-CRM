@@ -89,13 +89,14 @@ exports.updateStaff = (req, res) => {
           message: "Internal Error"
         });
       }
-
-      res.status(200).json({
-        success: true,
-        code: 200,
-        message: "Staff updated successfully",
-        data: result[0]
-      });
+      else {
+        return res.status(200).json({
+          success: true,
+          code: 200,
+          message: "Staff updated successfully",
+          data: result[0]
+        });
+      }
     });
   });
 };
@@ -183,10 +184,10 @@ exports.changeStaffPassword = (req, res) => {
       }
 
       if (
-        !staff?.updated_at || 
-        !req?.staff?.updated_at || 
-        isNaN(new Date(staff.updated_at).getTime()) || 
-        isNaN(new Date(req.staff.updated_at).getTime()) || 
+        !staff?.updated_at ||
+        !req?.staff?.updated_at ||
+        isNaN(new Date(staff.updated_at).getTime()) ||
+        isNaN(new Date(req.staff.updated_at).getTime()) ||
         new Date(staff.updated_at).getTime() !== new Date(req.staff.updated_at).getTime()
       ) {
         return res.status(401).json({
@@ -195,7 +196,7 @@ exports.changeStaffPassword = (req, res) => {
           message: "Invalid or expired token"
         });
       }
-            
+
 
       bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
         if (err) {
