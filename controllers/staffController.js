@@ -12,11 +12,14 @@ exports.getAllStaff = (req, res) => {
         message: "Internal Server Error"
       });
     }
-    res.status(200).json({
-      success: true,
-      code: 200,
-      data: results
-    });
+    else {
+      return res.status(200).json({
+        success: true,
+        code: 200,
+        message: "List of staffs",
+        data: results
+      });
+    }
   });
 };
 
