@@ -54,7 +54,7 @@ exports.staffRegister = async (req, res) => {
                                 });
                             }
                             const insertedId = result.insertId;
-                            db.query("SELECT * FROM staffs WHERE id = ?", [insertedId], (err, staffData) => {
+                            db.query("SELECT * FROM staffs WHERE id =?", [insertedId], (err, staffData) => {
                                 if (err) {
                                     return res.status(500).json({
                                         success: false,
@@ -62,7 +62,6 @@ exports.staffRegister = async (req, res) => {
                                         message: "Error fetching staff data"
                                     });
                                 }
-
                                 return res.status(201).json({
                                     success: true,
                                     code: 201,
