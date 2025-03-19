@@ -94,8 +94,9 @@ exports.updateStudent = (req, res) => {
           message: "Internal Error"
         });
       }
+
       else {
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           code: 200,
           message: "Student updated successfully",
