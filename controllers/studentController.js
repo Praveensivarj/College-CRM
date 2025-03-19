@@ -197,8 +197,7 @@ exports.changePassword = (req, res) => {
           code: 401,
           message: "Invalid or expired token"
         });
-      }
-      
+      } 
 
       bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
         if (err) {
