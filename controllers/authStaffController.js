@@ -180,11 +180,13 @@ exports.forgotStaffPassword = (req, res) => {
             "UPDATE staffs SET updated_at = now(), reset_token = ? WHERE staff_email = ?",
             [token, staff_email],
             (err) => {
-                if (err) return res.status(500).json({
-                    success: false,
-                    code: 500,
-                    message: "Database error"
-                });
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        code: 500,
+                        message: "Database error"
+                    });
+                }
 
                 const mailOptions = {
                     from: process.env.EMAIL_USER,
