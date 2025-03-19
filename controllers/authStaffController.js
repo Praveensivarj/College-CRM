@@ -62,14 +62,16 @@ exports.staffRegister = async (req, res) => {
                                         message: "Error fetching staff data"
                                     });
                                 }
-                                return res.status(201).json({
-                                    success: true,
-                                    code: 201,
-                                    message: "Staff registered successfully",
-                                    data: {
-                                        studentData: staffData[0]
-                                    }
-                                });
+                                else {
+                                    return res.status(201).json({
+                                        success: true,
+                                        code: 201,
+                                        message: "Staff registered successfully",
+                                        data: {
+                                            studentData: staffData[0]
+                                        }
+                                    });
+                                }
                             });
                         }
                     );
