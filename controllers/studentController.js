@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 const nodemailer = require('nodemailer');
+const { configDotenv } = require("dotenv");
 
 exports.getAllStudents = (req, res) => {
   db.query("SELECT * FROM students", (err, results) => {
@@ -188,8 +189,8 @@ exports.changePassword = (req, res) => {
       }
 
       if (
-        !student.updated_at || 
-        !req.student.updated_at || 
+        !student.updated_at ||
+        !req.student.updated_at ||
         new Date(student.updated_at).getTime() !== new Date(req.student.updated_at).getTime()
       ) {
         return res.status(401).json({
@@ -197,7 +198,7 @@ exports.changePassword = (req, res) => {
           code: 401,
           message: "Invalid or expired token"
         });
-      } 
+      }
 
       bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
         if (err) {
