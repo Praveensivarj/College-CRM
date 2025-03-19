@@ -234,7 +234,7 @@ exports.resetPassword = (req, res) => {
                     return res.status(500).json({
                         success: false,
                         code: 500,
-                        message: "Intenal server error"
+                        message: "internal server error"
                     });
                 }
 
@@ -267,7 +267,7 @@ exports.resetPassword = (req, res) => {
                         return res.status(500).json({
                             success: false,
                             code: 500,
-                            message: "Intenal server error"
+                            message: "internal server error"
                         });
                     }
 
@@ -279,7 +279,7 @@ exports.resetPassword = (req, res) => {
                                 return res.status(500).json({
                                     success: false,
                                     code: 500,
-                                    message: "Intenal server error"
+                                    message: "internal server error"
                                 });
                             }
 
