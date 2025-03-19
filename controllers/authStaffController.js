@@ -192,22 +192,25 @@ exports.forgotStaffPassword = (req, res) => {
                     from: process.env.EMAIL_USER,
                     to: staff_email,
                     subject: "Password Reset Request",
-                    text: `Use this token to reset your password: ${token}`,
+                    text: `Use this token to reset your password: ${token}`
                 };
 
                 transporter.sendMail(mailOptions, (err, info) => {
-                    if (err) return res.status(500).json({
-                        success: false,
-                        code: 500,
-                        token: token,
-                        message: "Email sending failed"
-                    });
-
-                    res.json({
-                        success: true,
-                        code: 200,
-                        message: "Reset link sent to your email"
-                    });
+                    if (err) {
+                        return res.status(500).json({
+                            success: false,
+                            code: 500,
+                            token: token,
+                            message: "Email sending failed"
+                        })
+                    }
+                    else {
+                        return res.status(200).json({
+                            success: true,
+                            code: 200,
+                            message: "Reset link send to your email"
+                        });
+                    }
                 });
             }
         );
