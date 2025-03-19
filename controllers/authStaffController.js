@@ -50,7 +50,7 @@ exports.staffRegister = async (req, res) => {
                                 return res.status(500).json({
                                     success: false,
                                     code: 500,
-                                    message: "Error registering staff"
+                                    message: "Error registered staff"
                                 });
                             }
                             const insertedId = result.insertId;
