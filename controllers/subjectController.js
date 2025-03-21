@@ -7,9 +7,10 @@ exports.addSubjects = (req, res) => {
         return res.status(400).json({
             success: false,
             code: 400,
-            message: "All field is required"
+            message: "All fields are required"
         });
     }
+
     db.query("select * from subjects where staff_id = ? and student_id = ?", [staff_id, student_id], (err, results) => {
         if (results.length > 0) {
             return res.status(409).json({
