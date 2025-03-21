@@ -202,7 +202,7 @@ exports.forgotStaffPassword = (req, res) => {
                             code: 500,
                             token: token,
                             message: "Email sending failed"
-                        })
+                        });
                     }
                     else {
                         return res.status(200).json({
