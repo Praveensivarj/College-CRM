@@ -66,7 +66,6 @@ exports.addSubjects = async (req, res) => {
             code: 500,
             message: "Internal server error"
         });
-
     }
 };
 
@@ -81,8 +80,8 @@ exports.update = async (req, res) => {
         });
     }
 
-    db.query("UPDATE subjects SET updated_at = NOW(), staff_id = ? WHERE id = ?", 
-        [staff_id, id], 
+    db.query("UPDATE subjects SET updated_at = NOW(), staff_id = ? WHERE id = ?",
+        [staff_id, id],
         (err, result) => {
             if (err) {
                 return res.status(500).json({
@@ -92,7 +91,7 @@ exports.update = async (req, res) => {
                     error: err.message
                 });
             }
-            
+
             if (result.affectedRows === 0) {
                 return res.status(404).json({
                     success: false,
