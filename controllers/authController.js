@@ -55,7 +55,7 @@ exports.register = async (req, res) => {
                         }
 
                         const insertedId = result.insertId;
-                        db.query("SELECT * FROM students WHERE id = ?", [insertedId], (err, studentData) => {
+                        db.query("SELECT name, dob, email, degree, mobile, address, age, gender, created_at, updated_at FROM students WHERE id = ?", [insertedId], (err, studentData) => {
                             if (err) {
                                 return res.status(500).json({
                                     success: false,
@@ -126,7 +126,7 @@ exports.login = (req, res) => {
         else {
             const student = results[0];
             const token = jwt.sign({ id: student.id, updated_at: student.updated_at }, process.env.JWT_SECRET, { expiresIn: "1h" });
-            db.query("select * from students where email = ?", [email], (err, result) => {
+            db.query("select name, dob, email, degree, mobile, address, age, gender, created_at, updated_at from students where email = ?", [email], (err, result) => {
                 res.status(200).json({
                     success: true,
                     code: 200,

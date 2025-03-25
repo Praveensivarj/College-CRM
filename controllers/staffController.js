@@ -4,27 +4,27 @@ const db = require("../config/db");
 const nodemailer = require('nodemailer');
 
 exports.getAllStaff = (req, res) => {
-  db.query("select * from staffs", (err, results) => {
+  db.query("select staff_name, staff_dob, staff_email, subject, staff_mobile, staff_address, staff_age, staff_gender, created_at, updated_at from staffs", (err, results) => {
     if (err) {
-      return res.status(500).json({
-        success: false,
-        code: 500,
-        message: "Internal Server Error"
-      });
-    }
-    else {
-      return res.status(200).json({
-        success: true,
-        code: 200,
-        message: "List of staffs",
-        data: results
-      });
-    }
-  });
+    return res.status(500).json({
+      success: false,
+      code: 500,
+      message: "Internal Server Error"
+    });
+  }
+  else {
+    return res.status(200).json({
+      success: true,
+      code: 200,
+      message: "List of staffs",
+      data: results
+    });
+  }
+});
 };
 
 exports.getStaffById = (req, res) => {
-  db.query("SELECT * FROM staffs WHERE id = ?", [req.staff.id], (err, results) => {
+  db.query("SELECT staff_name, staff_dob, staff_email, subject, staff_mobile, staff_address, staff_age, staff_gender, created_at, updated_at FROM staffs WHERE id = ?", [req.staff.id], (err, results) => {
     if (err) {
       return res.status(500).json({
         success: false,
@@ -84,7 +84,7 @@ exports.updateStaff = (req, res) => {
       });
     }
 
-    db.query("SELECT * FROM staffs WHERE id = ?", [staffId], (err, result) => {
+    db.query("SELECT staff_name, staff_dob, staff_email, subject, staff_mobile, staff_address, staff_age, staff_gender, created_at, updated_at FROM staffs WHERE id = ?", [staffId], (err, result) => {
       if (err) {
         return res.status(500).json({
           success: false,

@@ -54,7 +54,7 @@ exports.staffRegister = async (req, res) => {
                                 });
                             }
                             const insertedId = result.insertId;
-                            db.query("SELECT * FROM staffs WHERE id =?", [insertedId], (err, staffData) => {
+                            db.query("SELECT staff_name, staff_dob, staff_email, subject, staff_mobile, staff_address, staff_age, staff_gender, created_at, updated_at FROM staffs WHERE id =?", [insertedId], (err, staffData) => {
                                 if (err) {
                                     return res.status(500).json({
                                         success: false,
@@ -68,7 +68,7 @@ exports.staffRegister = async (req, res) => {
                                         code: 201,
                                         message: "Staff registered successfully",
                                         data: {
-                                            studentData: staffData[0]
+                                            staffData: staffData[0]
                                         }
                                     });
                                 }
@@ -123,7 +123,7 @@ exports.staffLogin = (req, res) => {
         else {
             const staff = results[0];
             const token = jwt.sign({ id: staff.id, updated_at: staff.updated_at }, process.env.JWT_SECRET, { expiresIn: "1h" });
-            db.query("select * from staffs where staff_email = ?", [staff_email], (err, result) => {
+            db.query("select staff_name, staff_dob, staff_email, subject, staff_mobile, staff_address, staff_age, staff_gender, created_at, updated_at from staffs where staff_email = ?", [staff_email], (err, result) => {
                 res.status(200).json({
                     success: true,
                     code: 200,

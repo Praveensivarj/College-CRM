@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const { configDotenv } = require("dotenv");
 
 exports.getAllStudents = (req, res) => {
-  db.query("SELECT * FROM students", (err, results) => {
+  db.query("SELECT name, dob, email, degree, mobile, address, age, gender, created_at, updated_at FROM students", (err, results) => {
     if (err) {
       return res.status(500).json({
         success: false,
@@ -25,7 +25,7 @@ exports.getAllStudents = (req, res) => {
 };
 
 exports.getStudentById = (req, res) => {
-  db.query("SELECT * FROM students WHERE id = ?", [req.student.id], (err, results) => {
+  db.query("SELECT name, dob, email, degree, mobile, address, age, gender, created_at, updated_at FROM students WHERE id = ?", [req.student.id], (err, results) => {
     if (err) {
       return res.status(500).json({
         success: false,
@@ -86,7 +86,7 @@ exports.updateStudent = (req, res) => {
       });
     }
 
-    db.query("SELECT * FROM students WHERE id = ?", [studentId], (err, result) => {
+    db.query("SELECT name, dob, email, degree, mobile, address, age, gender, created_at, updated_at FROM students WHERE id = ?", [studentId], (err, result) => {
       if (err) {
         return res.status(500).json({
           success: false,
