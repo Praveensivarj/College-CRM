@@ -7,6 +7,7 @@ const authStaffRoutes = require("./routes/authStaffRoutes");
 const staffRoutes = require("./routes/staffRoutes");
 const studentRoutes = require("./routes/studentRoutes");
 const subjectRoutes = require("./routes/subjectRoutes");
+const examRoutes = require('./routes/examRoutes');
 const app = express();
 
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use("/api/students", studentRoutes);
 app.use("/api/staffauth", authStaffRoutes);
 app.use("/api/staffs", staffRoutes);
 app.use("/api/subjects", subjectRoutes);
+app.use("/api/exams", examRoutes);
 const port = process.env.PORT;
 app.listen(port, (err) => {
     if (err) {
