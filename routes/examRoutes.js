@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { add } = require('../controllers/examsController');
-router.post('/add', add);
+const authMiddleware = require('../middleware/authMiddleware')
+router.post('/add', authMiddleware, add);
 module.exports = router;
