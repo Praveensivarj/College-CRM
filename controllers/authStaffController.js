@@ -227,7 +227,6 @@ exports.resetStaffPassword = (req, res) => {
             [decoded.staff_email, token],
             (err, results) => {
                 const data = results[0];
-                console.log(data);
                 if (err) {
                     return res.status(500).json({
                         success: false,
