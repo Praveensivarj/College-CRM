@@ -69,7 +69,7 @@ exports.addSubjects = async (req, res) => {
     }
 };
 
-exports.update = async (req, res) => {
+exports.updateSubject = async (req, res) => {
     const { staff_id, id } = req.body;
 
     if (!staff_id || !id) {
@@ -119,4 +119,33 @@ exports.update = async (req, res) => {
             });
         }
     );
+};
+
+exports.deleteSubject = (req, res) => {
+    const id = req.body;
+
+    if (!id) {
+        return res.status(409).json({
+            success: false,
+            code: 409,
+            message: "id is required for deleting."
+        });
+    }
+
+    db.query("delete from subjects where id = ?", [id], (err, result) => {
+        if(err){
+            return res.status(500).json({
+                success: false,
+                code: 500,
+                message: "Internal server error"
+            });
+        }
+        else{
+            return res.status(200).json({
+                success: true,
+                code: 200,
+                message: "Deleted successfully"
+            });
+        }
+    });
 };
