@@ -24,7 +24,7 @@ exports.add = async (req, res)=>{
             return res.status(409).json({
                 success: false,
                 code: 409,
-                message: "Exam already Added"
+                message: "Exam already added"
             });
         }
     });
