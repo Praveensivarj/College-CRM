@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
 exports.add = async (req, res)=>{
-    const{student_id, staff_id, subject_id, exam_date, total_marks, obtained_marks, result} = req.body;
+    const{student_id, staff_id, subject_id, exam_name, exam_date, total_marks, obtained_marks, result} = req.body;
 
-    if(!student_id || !staff_id || !subject_id || !exam_date || !total_marks || !obtained_marks || !result){
+    if(!student_id || !staff_id || !subject_id || !exam_name || !exam_date || !total_marks || !obtained_marks || !result){
         return res.status(400).json({
             success: false,
             code: 400,
@@ -29,7 +29,7 @@ exports.add = async (req, res)=>{
         }
     });
 
-    db.query('INSERT INTO exams (student_id, staff_id, subject_id, exam_date, total_marks, obtained_marks, result) VALUES (?, ?, ?, ?, ?, ?, ?)', [student_id, staff_id, subject_id, exam_date, total_marks, obtained_marks, result], (err, result) => {
+    db.query('INSERT INTO exams (student_id, staff_id, subject_id, exam_name, exam_date, total_marks, obtained_marks, result) VALUES (?, ?, ?, ?, ?, ?, ?)', [student_id, staff_id, subject_id, exam_name, exam_date, total_marks, obtained_marks, result], (err, result) => {
         if (err) {
             return res.status(500).json({
                 success: false,
