@@ -3,7 +3,7 @@ const db = require('../config/db');
 exports.addExams = async (req, res) => {
     const { subject_id, exam_date } = req.body;
 
-    try{
+    try {
         if (!subject_id || !exam_date) {
             return res.status(400).json({
                 success: false,
@@ -58,11 +58,24 @@ exports.addExams = async (req, res) => {
                 });
             });
         });
-    }catch(error){
+    } catch (error) {
         return res.status(500).json({
             success: false,
             code: 500,
             message: "Internal server error"
         });
     }
+};
+
+exports.update = (req, res) => {
+    const { exam_date } = req.body;
+
+    if (!exam_date) {
+        return  res.status(405).json({
+            success:  false,
+            code: 409,
+            message: "exam_date is required to update the data"
+        });
+    }
+    
 };
