@@ -16,9 +16,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/staffauth", authStaffRoutes);
 app.use("/api/staffs", staffRoutes);
-app.use("/api/subject", subjectRoutes);
-app.use("/api/exam", examRoutes);
-
 const port = process.env.PORT;
 app.listen(port, (err) => {
     if (err) {
