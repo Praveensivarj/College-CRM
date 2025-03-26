@@ -1,5 +1,6 @@
 const { configDotenv } = require('dotenv');
 const db = require('../config/db');
+const { compareSync } = require('bcryptjs');
 
 exports.addExams = async (req, res) => {
     const { subject_id, exam_date } = req.body;
@@ -72,31 +73,31 @@ exports.updateExams = (req, res) => {
     const { exam_date } = req.body;
 
     if (!exam_date) {
-        return  res.status(405).json({
-            success:  false,
+        return res.status(405).json({
+            success: false,
             code: 409,
             message: "exam_date is required to update the data"
         });
     }
-    
+
     db.query("update exams set exam_date = ?", [exam_date], (err, result) => {
-        if(err){
+        if (err) {
             return res.status(500).json({
                 success: false,
                 code: 500,
                 message: "Internal server error"
             });
         }
-        
+
         db.query("select * from exams where exam_date = ?", [exam_date], (err, updatedData) => {
-            if(err){
+            if (err) {
                 return res.status(500).json({
-                    success:false,
+                    success: false,
                     code: 500,
                     message: "Internal server error"
                 });
             }
-            else{
+            else {
                 return res.status(200).json({
                     success: true,
                     code: 200,
@@ -106,4 +107,16 @@ exports.updateExams = (req, res) => {
             }
         });
     });
+};
+
+exports.deleteExams = (req, res) => {
+    const exam_date = req.body;
+
+    if (!exam_date) {
+        return res.status(409).json({
+            success: false,
+            code: 409,
+            message: "exam_date is required for deleting a data"
+        });
+    }
 };

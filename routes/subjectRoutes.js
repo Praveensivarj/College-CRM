@@ -1,5 +1,5 @@
 const express = require('express');
-const {addSubjects, updateSubject, deleteSubject} = require('../controllers/subjectsController');
+const { addSubjects, updateSubject, deleteSubject } = require('../controllers/subjectsController');
 const router = express.Router();
 
 router.post("/addSubjects", addSubjects);
