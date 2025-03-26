@@ -119,4 +119,21 @@ exports.deleteExams = (req, res) => {
             message: "exam_date is required for deleting a data"
         });
     }
+
+    db.query("delete from exams where exam_date = ?", [exam_date], (err, result) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                code: 500,
+                message: "Internal server error"
+            });
+        }
+        else {
+            return res.status(200).json({
+                success: true,
+                code: 200,
+                message: "Data Deleted successfully"
+            });
+        }
+    });
 };
