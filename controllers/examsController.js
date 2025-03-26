@@ -1,3 +1,4 @@
+const { configDotenv } = require('dotenv');
 const db = require('../config/db');
 
 exports.addExams = async (req, res) => {
@@ -67,7 +68,7 @@ exports.addExams = async (req, res) => {
     }
 };
 
-exports.update = (req, res) => {
+exports.updateExams = (req, res) => {
     const { exam_date } = req.body;
 
     if (!exam_date) {
@@ -78,4 +79,31 @@ exports.update = (req, res) => {
         });
     }
     
+    db.query("update exams set exam_date = ?", [exam_date], (err, result) => {
+        if(err){
+            return res.status(500).json({
+                success: false,
+                code: 500,
+                message: "Internal server error"
+            });
+        }
+        
+        db.query("select * from exams where exam_date = ?", [exam_date], (err, updatedData) => {
+            if(err){
+                return res.status(500).json({
+                    success:false,
+                    code: 500,
+                    message: "Internal server error"
+                });
+            }
+            else{
+                return res.status(200).json({
+                    success: true,
+                    code: 200,
+                    message: "Updated successfully",
+                    data: updatedData[0]
+                });
+            }
+        });
+    });
 };
