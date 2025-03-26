@@ -1,6 +1,4 @@
-const { configDotenv } = require('dotenv');
 const db = require('../config/db');
-const { compareSync } = require('bcryptjs');
 
 exports.addExams = async (req, res) => {
     const { subject_id, exam_date } = req.body;
