@@ -72,7 +72,7 @@ exports.tokenGenerate = (req, res) => {
         }
 
         const exam = results[0];
-        const token = jwt.sign({ examId: exam.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: exam.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
         res.status(200).json({
             success: true,
@@ -99,9 +99,7 @@ exports.updateExams = async (req, res) => {
     }
 
     try {
-        const examId = req.exam.id;
-
-        const [existingExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [examId]);
+        const [existingExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [req.exam.id]);
 
         if (existingExam.length === 0) {
             return res.status(404).json({
@@ -111,9 +109,9 @@ exports.updateExams = async (req, res) => {
             });
         }
 
-        await db.promise().query("UPDATE exams SET updated_at = now(), exam_date = ? WHERE id = ?", [exam_date, examId]);
+        await db.promise().query("UPDATE exams SET updated_at = now(), exam_date = ? WHERE id = ?", [exam_date, req.exam.id]);
 
-        const [updatedExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [examId]);
+        const [updatedExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [req.exam.id]);
 
         return res.status(200).json({
             success: true,
