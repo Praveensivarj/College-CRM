@@ -3,60 +3,34 @@ const db = require('../config/db');
 exports.addExams = async (req, res) => {
     const { subject_id, exam_date } = req.body;
 
+    if (!subject_id || !exam_date) {
+        return res.status(400).json({
+            success: false,
+            code: 400,
+            message: "All fields are required"
+        });
+    }
+
     try {
-        if (!subject_id || !exam_date) {
-            return res.status(400).json({
+        const [existingExam] = await db.promise().query("SELECT * FROM exams WHERE subject_id = ? AND exam_date = ?", [subject_id, exam_date]);
+
+        if (existingExam.length > 0) {
+            return res.status(409).json({
                 success: false,
-                code: 400,
-                message: "All fields required"
+                code: 409,
+                message: "Exam already exists for this subject on the given date"
             });
         }
 
-        db.query("select * from exams where subject_id = ? and exam_date = ?", [subject_id, exam_date], (err, result) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    code: 500,
-                    message: "Database error"
-                });
-            }
+        const [insertResult] = await db.promise().query("INSERT INTO exams (subject_id, exam_date) VALUES (?, ?)", [subject_id, exam_date]);
 
-            if (result.length > 0) {
-                return res.status(409).json({
-                    success: false,
-                    code: 409,
-                    message: "Data already present in database"
-                });
-            }
+        const [newExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [insertResult.insertId]);
 
-            db.query("insert into exams(subject_id, exam_date) values(?, ?)", [subject_id, exam_date], (err, result) => {
-                if (err) {
-                    return res.status(500).json({
-                        success: false,
-                        code: 500,
-                        message: "Internal server error"
-                    });
-                }
-
-                const insertedId = result.insertId
-                db.query("select * from exams where id = ?", [insertedId], (err, data) => {
-                    if (err) {
-                        return res.status(500).json({
-                            success: false,
-                            code: 500,
-                            message: "Internal server error"
-                        });
-                    }
-                    else {
-                        return res.status(200).json({
-                            success: true,
-                            code: 200,
-                            message: "data added successfully",
-                            data: data[0]
-                        });
-                    }
-                });
-            });
+        return res.status(201).json({
+            success: true,
+            code: 201,
+            message: "Exam added successfully",
+            data: newExam[0]
         });
     } catch (error) {
         return res.status(500).json({
@@ -67,71 +41,81 @@ exports.addExams = async (req, res) => {
     }
 };
 
-exports.updateExams = (req, res) => {
-    const { exam_date } = req.body;
+exports.updateExams = async (req, res) => {
+    const { id, exam_date } = req.body;
 
-    if (!exam_date) {
-        return res.status(405).json({
+    if (!id || !exam_date) {
+        return res.status(400).json({
             success: false,
-            code: 409,
-            message: "exam_date is required to update the data"
+            code: 400,
+            message: "Exam ID and exam_date are required for updating"
         });
     }
 
-    db.query("update exams set exam_date = ?", [exam_date], (err, result) => {
-        if (err) {
-            return res.status(500).json({
+    try {
+        const [existingExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [id]);
+
+        if (existingExam.length === 0) {
+            return res.status(404).json({
                 success: false,
-                code: 500,
-                message: "Internal server error"
+                code: 404,
+                message: "Exam not found"
             });
         }
 
-        db.query("select * from exams where exam_date = ?", [exam_date], (err, updatedData) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    code: 500,
-                    message: "Internal server error"
-                });
-            }
-            else {
-                return res.status(200).json({
-                    success: true,
-                    code: 200,
-                    message: "Updated successfully",
-                    data: updatedData[0]
-                });
-            }
+        await db.promise().query("UPDATE exams SET exam_date = ? WHERE id = ?", [exam_date, id]);
+
+        const [updatedExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [id]);
+
+        return res.status(200).json({
+            success: true,
+            code: 200,
+            message: "Exam updated successfully",
+            data: updatedExam[0]
         });
-    });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            message: "Internal server error"
+        });
+    }
 };
 
-exports.deleteExams = (req, res) => {
-    const exam_date = req.body;
+exports.deleteExams = async (req, res) => {
+    const { id } = req.body;
 
-    if (!exam_date) {
-        return res.status(409).json({
+    if (!id) {
+        return res.status(400).json({
             success: false,
-            code: 409,
-            message: "exam_date is required for deleting a data"
+            code: 400,
+            message: "Exam ID is required for deletion"
         });
     }
 
-    db.query("delete from exams where exam_date = ?", [exam_date], (err, result) => {
-        if (err) {
-            return res.status(500).json({
+    try {
+        const [existingExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [id]);
+
+        if (existingExam.length === 0) {
+            return res.status(404).json({
                 success: false,
-                code: 500,
-                message: "Internal server error"
+                code: 404,
+                message: "Exam not found"
             });
         }
-        else {
-            return res.status(200).json({
-                success: true,
-                code: 200,
-                message: "Data Deleted successfully"
-            });
-        }
-    });
+
+        await db.promise().query("DELETE FROM exams WHERE id = ?", [id]);
+
+        return res.status(200).json({
+            success: true,
+            code: 200,
+            message: "Exam deleted successfully"
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            message: "Internal server error"
+        });
+    }
 };
