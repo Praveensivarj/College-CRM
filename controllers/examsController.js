@@ -130,18 +130,9 @@ exports.updateExams = async (req, res) => {
 };
 
 exports.deleteExams = async (req, res) => {
-    const { id } = req.body;
-
-    if (!id) {
-        return res.status(400).json({
-            success: false,
-            code: 400,
-            message: "Exam ID is required for deletion"
-        });
-    }
 
     try {
-        const [existingExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [id]);
+        const [existingExam] = await db.promise().query("SELECT * FROM exams WHERE id = ?", [req.exam.id]);
 
         if (existingExam.length === 0) {
             return res.status(404).json({
@@ -151,7 +142,7 @@ exports.deleteExams = async (req, res) => {
             });
         }
 
-        await db.promise().query("DELETE FROM exams WHERE id = ?", [id]);
+        await db.promise().query("DELETE FROM exams WHERE id = ?", [req.exam.id]);
 
         return res.status(200).json({
             success: true,
