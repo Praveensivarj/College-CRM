@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const jwt = require('jsonwebtoken');
 
 exports.addSubjects = async (req, res) => {
     try {
@@ -69,19 +70,62 @@ exports.addSubjects = async (req, res) => {
     }
 };
 
-exports.updateSubject = async (req, res) => {
-    const { staff_id, id } = req.body;
+exports.subjectFetch = (req, res) => {
+    const { subject_name } = req.body;
 
-    if (!staff_id || !id) {
+    if (!subject_name) {
+        return res.status(400).json({
+            success: false,
+            code: 400,
+            message: "subject_name field is empty!!"
+        });
+    }
+
+    db.query("SELECT * FROM subjects WHERE subject_name = ?", [subject_name], (err, results) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                code: 500,
+                message: "Internal error",
+            });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({
+                success: false,
+                code: 404,
+                message: "Subject not found in database"
+            });
+        }
+
+        const subject = results[0];
+        const token = jwt.sign({ id: subject.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+        res.status(200).json({
+            success: true,
+            code: 200,
+            message: "Subject fetched successfully",
+            data: {
+                token: token,
+                subjectData: subject
+            }
+        });
+    });
+};
+
+exports.updateSubject = async (req, res) => {
+    const { staff_id } = req.body;
+
+    if (!staff_id) {
         return res.status(409).json({
             success: false,
             code: 409,
-            message: "Both staff_id and id are required for updating."
+            message: "staff_id is required for updating."
         });
     }
 
     db.query("UPDATE subjects SET updated_at = NOW(), staff_id = ? WHERE id = ?",
-        [staff_id, id],
+        [staff_id, req.subject.id],
         (err, result) => {
             if (err) {
                 return res.status(500).json({
@@ -100,7 +144,7 @@ exports.updateSubject = async (req, res) => {
                 });
             }
 
-            db.query("SELECT * FROM subjects WHERE id = ?", [id], (err, data) => {
+            db.query("SELECT * FROM subjects WHERE id = ?", [req.subject.id], (err, data) => {
                 if (err) {
                     return res.status(500).json({
                         success: false,
@@ -121,31 +165,30 @@ exports.updateSubject = async (req, res) => {
     );
 };
 
-exports.deleteSubject = (req, res) => {
-    const id = req.body;
+exports.deleteSubject = async (req, res) => {
+    try {
+        const [existingSubject] = await db.promise().query("SELECT * FROM subjects WHERE id = ?", [req.subject.id]);
 
-    if (!id) {
-        return res.status(409).json({
+        if (existingSubject.length === 0) {
+            return res.status(404).json({
+                success: false,
+                code: 404,
+                message: "Subject not found"
+            });
+        }
+
+        await db.promise().query("DELETE FROM subjects WHERE id = ?", [req.subject.id]);
+
+        return res.status(200).json({
+            success: true,
+            code: 200,
+            message: "Subject deleted successfully"
+        });
+    } catch (error) {
+        return res.status(500).json({
             success: false,
-            code: 409,
-            message: "id is required for deleting."
+            code: 500,
+            message: "Internal server error"
         });
     }
-
-    db.query("delete from subjects where id = ?", [id], (err, result) => {
-        if(err){
-            return res.status(500).json({
-                success: false,
-                code: 500,
-                message: "Internal server error"
-            });
-        }
-        else{
-            return res.status(200).json({
-                success: true,
-                code: 200,
-                message: "Deleted successfully"
-            });
-        }
-    });
 };

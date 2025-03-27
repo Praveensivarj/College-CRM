@@ -42,7 +42,7 @@ exports.addExams = async (req, res) => {
     }
 };
 
-exports.tokenGenerate = (req, res) => {
+exports.examFetch = (req, res) => {
     const { exam_date } = req.body;
 
     if (!exam_date) {
@@ -59,7 +59,6 @@ exports.tokenGenerate = (req, res) => {
                 success: false,
                 code: 500,
                 message: "Internal error",
-                error: err.message
             });
         }
 

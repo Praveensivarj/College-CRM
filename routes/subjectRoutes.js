@@ -1,9 +1,11 @@
 const express = require('express');
-const { addSubjects, updateSubject, deleteSubject } = require('../controllers/subjectsController');
+const { subjectFetch, addSubjects, updateSubject, deleteSubject } = require('../controllers/subjectsController');
+const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
 router.post("/addSubjects", addSubjects);
-router.put("/update", updateSubject);
-router.delete("/delete", deleteSubject);
+router.put("/update", authMiddleware, updateSubject);
+router.delete("/delete", authMiddleware, deleteSubject);
+router.post("/fetch", subjectFetch);
 
 module.exports = router;
