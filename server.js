@@ -2,9 +2,9 @@ const express = require("express");
 require("dotenv").config();;
 const cors = require("cors");
 
-const authStudentRoutes = require("./routes/authStudentRoutes");
-const authStaffRoutes = require("./routes/authStaffRoutes");
-const authAdminController = require("./routes/authAdminRoutes");
+const authStudentRoutes = require("./routes/studentRoutes");
+const authStaffRoutes = require("./routes/staffRoutes");
+const authAdminController = require("./routes/adminRoutes");
 const app = express();
 
 app.use(express.json());

@@ -1,5 +1,5 @@
 const express = require("express");
-const { staffRegister, staffLogin, forgotStaffPassword, resetStaffPassword, getAllStaff, getStaffById, updateStaff, deleteStaff, changeStaffPassword } = require("../controllers/authStaffController");
+const { staffRegister, staffLogin, forgotStaffPassword, resetStaffPassword, getAllStaff, getStaffById, updateStaff, deleteStaff, changeStaffPassword } = require("../controllers/staffController");
 const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 
