@@ -3,7 +3,6 @@ const db = require("../config/db");
 const nodemailer = require('nodemailer');
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
-const { text } = require("express");
 
 exports.adminRegister = async (req, res) => {
     try {
