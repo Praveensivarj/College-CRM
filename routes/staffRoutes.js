@@ -1,16 +1,16 @@
 const express = require("express");
 const { staffRegister, staffLogin, forgotStaffPassword, resetStaffPassword, getAllStaff, getStaffById, updateStaff, deleteStaff, changeStaffPassword } = require("../controllers/staffController");
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
+const middleware = require("../middleware/middleware");
 
 router.post("/register", staffRegister);
 router.post("/login", staffLogin);
 router.post("/forgot-password", forgotStaffPassword );
 router.post("/reset-password", resetStaffPassword);
 router.get("/", getAllStaff);
-router.get("/profile", authMiddleware, getStaffById);
-router.put("/update", authMiddleware, updateStaff);
-router.delete("/delete", authMiddleware, deleteStaff);
-router.post('/change-password', authMiddleware, changeStaffPassword);
+router.get("/profile", middleware, getStaffById);
+router.put("/update", middleware, updateStaff);
+router.delete("/delete", middleware, deleteStaff);
+router.post('/change-password', middleware, changeStaffPassword);
 
 module.exports = router;
