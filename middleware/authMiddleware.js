@@ -13,6 +13,7 @@ const authMiddleware = (req, res, next) => {
     const verified = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET);
     req.student = verified;
     req.staff = verified;
+    req.admin = verified;
     req.exam = verified;
     req.subject = verified;
     next();

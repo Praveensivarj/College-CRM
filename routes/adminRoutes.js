@@ -1,0 +1,10 @@
+const express = require("express");
+const { getAllAdmin, getAdminById, updateAdmin, deleteAdmin, changeAdminPassword } = require("../controllers/adminController");
+const authMiddleware = require("../middleware/authMiddleware");
+const router = express.Router();
+router.get("/", getAllAdmin);
+router.get("/profile", authMiddleware, getAdminById);
+router.put("/update", authMiddleware, updateAdmin);
+router.delete("/delete", authMiddleware, deleteAdmin);
+router.post('/change-password', authMiddleware, changeAdminPassword);
+module.exports = router;
