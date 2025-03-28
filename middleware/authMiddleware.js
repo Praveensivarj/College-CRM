@@ -14,8 +14,6 @@ const authMiddleware = (req, res, next) => {
     req.student = verified;
     req.staff = verified;
     req.admin = verified;
-    req.exam = verified;
-    req.subject = verified;
     next();
   } catch (err) {
     res.status(400).json({
