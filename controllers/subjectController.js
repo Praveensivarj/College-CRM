@@ -35,7 +35,7 @@ exports.addSubject = async (req, res) => {
                         success: true,
                         code: 201,
                         message: "Subject inserted successfully",
-                        data: result
+                        data: result[0]
                     });
                 }
             });
@@ -52,7 +52,7 @@ exports.subjects = (req, res) => {
                 message: "Internal server error"
             });
         }
-        
+
         else {
             return res.status(200).json({
                 success: true,
