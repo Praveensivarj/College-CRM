@@ -127,15 +127,15 @@ exports.updateExam = (req, res) => {
 
         else {
             db.query("UPDATE exams SET subject_id = ?", [subject_id], (err, result) => {
-                if(err) {
+                if (err) {
                     return res.status(500).json({
                         success: false,
                         code: 500,
                         message: "Internal server error"
                     });
                 }
-                
-                else{ 
+
+                else {
                     return res.status(200).json({
                         success: true,
                         code: 200,
@@ -151,7 +151,7 @@ exports.updateExam = (req, res) => {
 exports.deleteExam = (req, res) => {
     const exam_date = req.body;
 
-    if(!exam_date){
+    if (!exam_date) {
         return res.status(400).json({
             success: false,
             code: 500,
@@ -159,25 +159,25 @@ exports.deleteExam = (req, res) => {
         });
     }
 
-    else{
+    else {
         db.query("SELECT * FROM exams WHERE exam_date = ?", [exam_date], (err, result) => {
-            if(result.length === 0){
+            if (result.length === 0) {
                 return res.status(404).json({
-                    success: false, 
+                    success: false,
                     code: 404,
                     message: "Data not present in database"
                 });
             }
-            else{
+            else {
                 db.query("DELETE exams where exam_date = ?", [exam_date], (err, result) => {
-                    if(err){
+                    if (err) {
                         return res.status(500).json({
                             success: false,
                             code: 500,
                             message: "Internal server error"
                         });
                     }
-                    else{
+                    else {
                         return res.status(200).json({
                             success: true,
                             code: 200,

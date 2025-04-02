@@ -5,7 +5,7 @@ const middleware = require("../middleware/middleware");
 
 router.post("/register", staffRegister);
 router.post("/login", staffLogin);
-router.post("/forgot-password", forgotStaffPassword );
+router.post("/forgot-password", forgotStaffPassword);
 router.post("/reset-password", resetStaffPassword);
 router.get("/", getAllStaff);
 router.get("/profile", middleware, getStaffById);

@@ -6,7 +6,7 @@ const studentRoutes = require("./routes/studentRoutes");
 const staffRoutes = require("./routes/staffRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const subjectRoutes = require("./routes/subjectRoutes");
-const examRoutes = require("./routes/examRoutes"); 
+const examRoutes = require("./routes/examRoutes");
 const app = express();
 
 app.use(express.json());
