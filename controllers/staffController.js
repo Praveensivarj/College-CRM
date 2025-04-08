@@ -346,7 +346,7 @@ exports.getStaffById = (req, res) => {
 };
 
 exports.updateStaff = (req, res) => {
-    const allowedFields = ["name", "dob", "email", "degree", "mobile", "address", "age", "gender"];
+    const allowedFields = ["name", "dob", "email", "subject", "mobile", "address", "age", "gender"];
     const updateFields = [];
     const values = [];
 

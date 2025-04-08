@@ -357,7 +357,7 @@ exports.getAdminById = (req, res) => {
 };
 
 exports.updateAdmin = (req, res) => {
-    const allowedFields = ["name", "dob", "email", "degree", "mobile", "address", "age", "gender"];
+    const allowedFields = ["name", "dob", "email", "role", "mobile", "address", "age", "gender"];
     const updateFields = [];
     const values = [];
 
