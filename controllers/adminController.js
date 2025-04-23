@@ -507,7 +507,6 @@ exports.changeAdminPassword = (req, res) => {
                 });
             }
 
-
             bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
                 if (err) {
                     return res.status(500).json({
